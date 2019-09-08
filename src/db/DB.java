@@ -11,6 +11,14 @@ import java.util.Properties;
 
 public class DB {
 	
+	/*
+	 * Metodo para conexao com banco de dados
+	 * Iniciar conn uma conexao null fora do metodo (Objeto de conexao do JDBC)
+	 * Objeto props do tipo Properties chama o metodo para carregar o arquivo db.properties de conexao
+	 * props tem o metodo getProperty() que recebe a url do db.properties e retorna numa String
+	 * DriverManager -> classe JDBC que chama getConnection, passando a url, propriedades como parametro
+	 */
+	
 	private static Connection conn = null;
 	
 	public static Connection getConnection() {
@@ -27,6 +35,11 @@ public class DB {
 		return conn;
 	}
 	
+	/*
+	 * Metodo auxiliar pra fechar a conexao com banco de dados
+	 * Se conexao estiver instanciada (aberta), entao fecha
+	 */
+	
 	public static void closeConnection() {
 		if (conn != null) {
 			try {
@@ -38,6 +51,13 @@ public class DB {
 		}
 	}
 
+	/*
+	 * Metodo para carregar arquivo com propriedades de conexao db.properties
+	 * FileInputStream "abre" o arquivo db.properties diretamente da raiz do projeto
+	 * Objeto "props" do tipo Properties tem o metodo de leitura load() apontando para objeto fs
+	 * IOException tambem trata FileNotFoundException
+	 */
+	
 	private static Properties loadProperties() {
 		try (FileInputStream fs = new FileInputStream("db.properties")) {
 			Properties props = new Properties();
@@ -49,6 +69,7 @@ public class DB {
 		}
 	}
 	
+	//Metodo auxiliar pra fechar o Statement
 	public static void closeStatment(Statement st) {
 		if (st != null) {
 			try {
@@ -60,6 +81,7 @@ public class DB {
 		}
 	}
 	
+	//Metodo auxiliar pra fechar o ResultSet
 	public static void closeResultSet(ResultSet rs) {
 		if (rs != null) {
 			try {
