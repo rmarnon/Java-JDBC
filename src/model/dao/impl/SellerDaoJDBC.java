@@ -55,25 +55,15 @@ public class SellerDaoJDBC implements SellerDao {//Deixa o esqueleto montado
 			//O comando SQL acima sera executado (Consulta) e retorna tipo tabela abaixo
 			
 			/*
-			 * |Id | Name |   Email   |  BirthDate | BaseSalary | DepartmentId | DepName
-			 * |3  | Alex |alex@email | 1988-01-15 |    2200    |      1       |Computers
+			 * |Id | Name |    Email   |  BirthDate | BaseSalary | DepartmentId | DepName
+			 * |3  | Alex | alex@email | 1988-01-15 |    2200    |      1       |Computers
 			 */
 			
 			if(rs.next()) {//verifica se consulta trouxe algum dado
 				
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId"));//Set no objeto; rs.get ->tipo dado, "nome coluna"
-				dep.setName(rs.getString("DepName"));
-				
-				Seller seller = new Seller();
-				seller.setId(rs.getInt("Id"));
-				seller.setName(rs.getString("Name"));
-				seller.setEmail(rs.getString("Email"));
-				seller.setBirthDate(rs.getDate("BirthDate"));
-				seller.setBaseSalary(rs.getDouble("BaseSalary"));
-				seller.setDepartment(dep);//Associacao direta ja passa objeto como parametro
-				
-				return seller;			
+				Department dep = instantiateDepartment(rs);				
+				Seller seller = instanteSeller(rs, dep);				
+				return seller;
 			}			
 			return null;//Nao existe vendedor com esse Id				
 		}
@@ -84,6 +74,24 @@ public class SellerDaoJDBC implements SellerDao {//Deixa o esqueleto montado
 			DB.closeStatment(st);
 			DB.closeResultSet(rs);
 		}		
+	}
+
+	private Seller instanteSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("Id"));
+		seller.setName(rs.getString("Name"));
+		seller.setEmail(rs.getString("Email"));
+		seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setBaseSalary(rs.getDouble("BaseSalary"));
+		seller.setDepartment(dep);//Associacao direta ja passa objeto como parametro		
+		return seller;			
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException{
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));//Set no objeto; rs.get ->tipo dado, "nome coluna"
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override
