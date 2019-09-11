@@ -25,14 +25,76 @@ public class SellerDaoJDBC implements SellerDao {//Deixa o esqueleto montado
 	}
 	
 	@Override
-	public void insert(Seller obj) {
-		// TODO Auto-generated method stub
+	public void insert(Seller seller) {
 		
+		PreparedStatement st = null;
+				
+		try {
+			st = conn.prepareStatement("Insert into Seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+					+ "Values "
+					+ "(?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+					//Retorna o Id do vendedor inserido
+			
+			st.setString(1, seller.getName());
+			st.setString(2, seller.getEmail());
+			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			st.setDouble(4, seller.getBaseSalary());
+			st.setInt(5, seller.getDepartment().getId());
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected > 0) {//Significa que inseriu
+				ResultSet rs = st.getGeneratedKeys();
+				if (rs.next()) {//Se existir esse cara
+					int id = rs.getInt(1);//Pega o Id gerado
+					seller.setId(id);//Insere novo Id					
+				}
+				DB.closeResultSet(rs);
+			}
+			else {
+				throw new DbException("Unexpected error No rows affected");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatment(st);
+		}		
 	}
 
 	@Override
-	public void update(Seller obj) {
-		// TODO Auto-generated method stub
+	public void update(Seller seller) {
+		
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("Update Seller Set "
+					+ "Name = ?, "
+					+ "Email = ?, "
+					+ "BirthDate = ?, "
+					+ "BaseSalary = ?, "
+					+ "DepartmentId = ?  "
+					+ "Where Id = ?");
+
+			
+			st.setString(1, seller.getName());
+			st.setString(2, seller.getEmail());
+			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			st.setDouble(4, seller.getBaseSalary());
+			st.setInt(5, seller.getDepartment().getId());
+			st.setInt(6, seller.getId());//Id Seller
+			
+			st.executeUpdate();//Executa update
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatment(st);
+		}	
 		
 	}
 
