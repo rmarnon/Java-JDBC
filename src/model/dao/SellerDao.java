@@ -12,6 +12,6 @@ public interface SellerDao {//Ctrl + F para Find e Replace
 	void deleteById(Integer id);
 	Seller findById(Integer id);
 	List<Seller> findall();
-	List<Seller> findByDepartment(Department department);//Novo metodo a ser implementado
+	List<Seller> findByDepartment(Department department);
 	
 }
