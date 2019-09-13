@@ -21,7 +21,7 @@ public class Program2 {
 		System.out.println(dep);
 		
 		System.out.println("\n===Teste 2: deleteById===");
-		depDao.deletById(5);
+		depDao.deletById(16);
 		System.out.println("Deleted Sucess! ");
 		
 		System.out.println("\n===Teste 3: findById===");
