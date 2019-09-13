@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 import db.DB;
 
@@ -31,7 +32,7 @@ public class InserirDadosBanco {
 			//Cada ? tem sua posicao e equivale ao tipo a ser inserido no st.set(...)
 			st.setString(1, "Carla Rodrigues");
 			st.setString(2, "carla@gmail.com");
-			st.setDate(3, new java.sql.Date(sdf.parse("27/12/1991").getTime()));
+			st.setDate(3, new Date(sdf.parse("27/12/1991").getTime()));
 			//Data deve ser instanciado objeto java.sql.Date, convertido "parse", e no final .getTime()
 			st.setDouble(4, 1450.00);
 			st.setInt(5, 4);
